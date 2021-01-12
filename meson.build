@@ -34,6 +34,10 @@ fmt_dep = fmt_proj.get_variable('fmt_dep')
 spdlog_proj = subproject('spdlog')
 spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
 
-executable('lhc-generator', 
-           ['lhc-generator.cc'],
-           dependencies: [m_dep, abseil_random_dep, abseil_strings_dep, abseil_time_dep, fmt_dep, spdlog_dep])
+gtest_proj = subproject('gtest')
+gtest_dep = gtest_proj.get_variable('gtest_dep')
+gmock_dep = gtest_proj.get_variable('gmock_dep')
+
+executable('lhc-generator',
+           ['main.cc'],
+           dependencies: [m_dep, abseil_random_dep, abseil_strings_dep, abseil_time_dep, fmt_dep, spdlog_dep, gtest_dep])
