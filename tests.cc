@@ -1,6 +1,8 @@
 #include "lhc-generator.h"
 #include "gtest/gtest.h"
 
+#include"lhc-generator.cc"
+
 TEST(RandomNVector, IncreasingValuesInVector) {
   auto x = RandomNVector(100);
   for (size_t i = 0; i < x.size() - 1; ++i) {

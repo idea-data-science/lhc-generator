@@ -39,17 +39,17 @@ gtest_dep = gtest_proj.get_variable('gtest_dep')
 gmock_dep = gtest_proj.get_variable('gmock_dep')
 
 lhc_lib = static_library('lhc-generator', ['lhc-generator.cc'],
-                          dependencies: [m_dep, abseil_random_dep])
+                          dependencies: [m_dep, abseil_random_dep, fmt_dep])
 
 
 executable('lhc-generator',
            ['main.cc'],
            link_with: lhc_lib,
-           dependencies: [m_dep, abseil_random_dep, abseil_strings_dep, fmt_dep, spdlog_dep])
+           dependencies: [])
 
 t = executable('lhc-tests',
             ['tests.cc'],
             link_with: lhc_lib,
-            dependencies: [m_dep, abseil_random_dep, gtest_dep])
+            dependencies: [m_dep, abseil_random_dep, gtest_dep, fmt_dep])
 
 test('simple unit test', t)

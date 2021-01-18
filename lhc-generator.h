@@ -5,5 +5,9 @@
 
 typedef std::vector<double> vector_t;
 
-vector_t RandomNVector(int n);
-void Shuffle(vector_t *x);
+
+//welche funktionen aus lhc-generator.cc werden exported und somit für die gelinkten
+//dateien verfügbar gemacht
+//vector_t RandomNVector(int n);
+//void Shuffle(vector_t *x);
+int LhcDataPrinter(char *argv[], int argc);
