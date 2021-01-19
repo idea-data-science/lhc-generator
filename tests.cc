@@ -13,6 +13,6 @@ TEST(RandomNVector, IncreasingValuesInVector) {
 int main(int argc, char *argv[]) {
   testing::InitGoogleTest(&argc, argv);
   std::cout << RUN_ALL_TESTS(); // wieso kann ich das benutzen ohne #include
-                                // <iostream>
+                                // <iostream> wird wohl in einer der importierten librarys mit geladen
   return 0;
 }

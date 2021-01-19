@@ -31,6 +31,10 @@ abseil_time_dep = abseil_proj.get_variable('absl_time_dep')
 fmt_proj = subproject('fmt')
 fmt_dep = fmt_proj.get_variable('fmt_dep')
 
+eigen_proj = subproject('eigen')
+eigen_dep = fmt_proj.get_variable('eigen_dep')
+
+
 spdlog_proj = subproject('spdlog')
 spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
 
@@ -39,7 +43,7 @@ gtest_dep = gtest_proj.get_variable('gtest_dep')
 gmock_dep = gtest_proj.get_variable('gmock_dep')
 
 lhc_lib = static_library('lhc-generator', ['lhc-generator.cc'],
-                          dependencies: [m_dep, abseil_random_dep, fmt_dep])
+                          dependencies: [abseil_random_dep, fmt_dep, eigen_dep])
 
 
 executable('lhc-generator',
@@ -50,6 +54,6 @@ executable('lhc-generator',
 t = executable('lhc-tests',
             ['tests.cc'],
             link_with: lhc_lib,
-            dependencies: [m_dep, abseil_random_dep, gtest_dep, fmt_dep])
+            dependencies: [abseil_random_dep, gtest_dep, fmt_dep])
 
 test('simple unit test', t)

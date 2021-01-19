@@ -2,7 +2,7 @@
 #pragma once
 
 #include <vector> //https://en.cppreference.com/w/cpp/container/vector
-
+#include <eigen/eigen.h>
 typedef std::vector<double> vector_t;
 
 

@@ -28,7 +28,6 @@ static void Shuffle(vector_t *x) {
     std::swap(xx[i], xx[j]);
   }
 }
-
 int LhcDataPrinter( char *argv[], int argc) {
   /* code */
 
