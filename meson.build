@@ -32,8 +32,7 @@ fmt_proj = subproject('fmt')
 fmt_dep = fmt_proj.get_variable('fmt_dep')
 
 eigen_proj = subproject('eigen')
-eigen_dep = fmt_proj.get_variable('eigen_dep')
-
+eigen_dep = eigen_proj.get_variable('eigen_dep')
 
 spdlog_proj = subproject('spdlog')
 spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
@@ -49,11 +48,11 @@ lhc_lib = static_library('lhc-generator', ['lhc-generator.cc'],
 executable('lhc-generator',
            ['main.cc'],
            link_with: lhc_lib,
-           dependencies: [])
+           dependencies: [eigen_dep])
 
 t = executable('lhc-tests',
             ['tests.cc'],
             link_with: lhc_lib,
-            dependencies: [abseil_random_dep, gtest_dep, fmt_dep])
+            dependencies: [abseil_random_dep, gtest_dep, fmt_dep,eigen_dep])
 
 test('simple unit test', t)

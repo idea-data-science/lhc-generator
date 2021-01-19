@@ -13,15 +13,15 @@
 static absl::BitGen bitgen; // get random seed "bitgen" static-> wird nur in
                             // dieser datei genutzt
 
-static vector_t RandomNVector(int n) {
-  vector_t x(n);                // vector der länge n mit daten typ double
+static Eigen::VectorXd RandomNVector(int n) {
+  Eigen::VectorXd x(n);                // vector der länge n mit daten typ double
   for (int i = 0; i < n; ++i) { // schleife über vector länge
     x[i] = absl::Uniform(bitgen, i * 1.0 / n, (i + 1) * 1.0 / n); //
   }
   return x;
 }
 
-static void Shuffle(vector_t *x) {
+static void Shuffle(Eigen::VectorXd *x) {
   double *xx = x->data(); // ist eigenschaft der std::vector klasser
   for (size_t i = x->size() - 1; i > 0; --i) {
     size_t j = absl::Uniform<size_t>(bitgen, 0, i);
@@ -62,19 +62,19 @@ int LhcDataPrinter( char *argv[], int argc) {
     return 1;
   }
 
-  std::vector<vector_t> X; // ein vektor aus vektoren -> matrix
+  //std::vector<vector_t> X; // ein vektor aus vektoren -> matrix
+  Eigen::MatrixXd X(number_of_points,number_of_dimensions);
   for (size_t d = 0; d < number_of_dimensions; ++d) {
-    auto x = RandomNVector(number_of_points);
+    Eigen::VectorXd x = RandomNVector(number_of_points);
     if (d > 0) {
       Shuffle(&x);
     }
-    X.push_back(
-        x); // https://www.cplusplus.com/reference/vector/vector/push_back/
+    X.col(d) = x; // https://www.cplusplus.com/reference/vector/vector/push_back/
   }
 
   for (size_t n = 0; n < number_of_points; ++n) {
     for (size_t d = 0; d < number_of_dimensions; ++d) {
-      fmt::print("{} ", X[d][n]);
+      fmt::print("{} ", X(n,d));
     }
     fmt::print("\n");
   }

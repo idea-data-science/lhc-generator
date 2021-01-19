@@ -4,3 +4,4 @@ subprojects/fmt-7.0.1/
 subprojects/googletest-release-1.10.0/
 subprojects/packagecache/
 subprojects/spdlog-1.8.0/
+subprojects/eigen-3.3.9/
