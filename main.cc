@@ -7,7 +7,8 @@
 // bzw ist alles der std library automatisch verfügbar und wenn ja warum musste
 // man hier vector extra includen?
 
-//#include <gtest/gtest.h> //https://github.com/google/googletest/blob/master/googletest/docs/primer.md
+//#include <gtest/gtest.h>
+////https://github.com/google/googletest/blob/master/googletest/docs/primer.md
 
 #include "absl/strings/numbers.h" //https://abseil.io/docs/cpp/guides/format
 #include "fmt/core.h" //https://github.com/fmtlib/fmt (in and out streaming)
@@ -48,10 +49,10 @@ int main(int argc, char *argv[]) {
 
   for (size_t n = 0; n < number_of_points; ++n) {
     for (size_t d = 0; d < number_of_dimensions; ++d) {
-      fmt::print("{} ", X(n,d));
+      fmt::print("{} ", X(n, d));
     }
     fmt::print("\n");
   }
-  fmt::print("Minimal Distance: {} \n",LhcMinDistance(X));
+  fmt::print("Minimal Distance: {} \n", LhcMinDistance(X));
   return 0;
 }

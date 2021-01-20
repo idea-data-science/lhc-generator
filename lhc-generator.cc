@@ -16,7 +16,7 @@ static absl::BitGen bitgen; // get random seed "bitgen" static-> wird nur in
                             // dieser datei genutzt
 
 static Eigen::VectorXd RandomNVector(int n) {
-  Eigen::VectorXd x(n);                // vector der länge n mit daten typ double
+  Eigen::VectorXd x(n);         // vector der länge n mit daten typ double
   for (int i = 0; i < n; ++i) { // schleife über vector länge
     x[i] = absl::Uniform(bitgen, i * 1.0 / n, (i + 1) * 1.0 / n); //
   }
@@ -31,40 +31,40 @@ static void Shuffle(Eigen::VectorXd *x) {
   }
 }
 
+Eigen::MatrixXd LhcDataGenerator(size_t number_of_points,
+                                 size_t number_of_dimensions) {
 
-
-
-
-
-
-Eigen::MatrixXd LhcDataGenerator(size_t number_of_points, size_t number_of_dimensions) {
-
-  //std::vector<vector_t> X; // ein vektor aus vektoren -> matrix
-  Eigen::MatrixXd X(number_of_points,number_of_dimensions);
+  // std::vector<vector_t> X; // ein vektor aus vektoren -> matrix
+  Eigen::MatrixXd X(number_of_points, number_of_dimensions);
   for (size_t d = 0; d < number_of_dimensions; ++d) {
     Eigen::VectorXd x = RandomNVector(number_of_points);
     if (d > 0) {
       Shuffle(&x);
     }
-    X.col(d) = x; // https://www.cplusplus.com/reference/vector/vector/push_back/
+    X.col(d) =
+        x; // https://www.cplusplus.com/reference/vector/vector/push_back/
   }
 
   return X;
 }
 
 //Übergebe constante reference kein speicher wird kopiert
-//variable kann nicht verändert werden aber es ist ein in jedem fall gültiges objekt (Kein nullpointer)
-double LhcMinDistance(const Eigen::MatrixXd &X){
-    size_t rows = X.rows();
-    size_t cols = X.cols();
-    double best_min = std::numeric_limits<double>::max();
-    for(size_t n = 0; n < (rows-1); n++){
-      auto pt = X.row(n);
-      double min;
-      min = (X.block(n+1,0,rows-(n+1),cols).rowwise() - pt).rowwise().squaredNorm().minCoeff();
-      if(min < best_min) {
-        best_min = min;
-      }
+// variable kann nicht verändert werden aber es ist ein in jedem fall gültiges
+// objekt (Kein nullpointer)
+double LhcMinDistance(const Eigen::MatrixXd &X) {
+  size_t rows = X.rows();
+  size_t cols = X.cols();
+  double best_min = std::numeric_limits<double>::max();
+  for (size_t n = 0; n < (rows - 1); n++) {
+    auto pt = X.row(n);
+    double min;
+    min = (X.block(n + 1, 0, rows - (n + 1), cols).rowwise() - pt)
+              .rowwise()
+              .squaredNorm()
+              .minCoeff();
+    if (min < best_min) {
+      best_min = min;
     }
+  }
   return std::sqrt(best_min);
 }
