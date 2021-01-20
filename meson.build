@@ -48,7 +48,7 @@ lhc_lib = static_library('lhc-generator', ['lhc-generator.cc'],
 executable('lhc-generator',
            ['main.cc'],
            link_with: lhc_lib,
-           dependencies: [eigen_dep])
+           dependencies: [eigen_dep, abseil_strings_dep,fmt_dep])
 
 t = executable('lhc-tests',
             ['tests.cc'],

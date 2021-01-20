@@ -12,4 +12,5 @@
 //dateien verfügbar gemacht
 //vector_t RandomNVector(int n);
 //void Shuffle(vector_t *x);
-int LhcDataPrinter(char *argv[], int argc);
+Eigen::MatrixXd LhcDataGenerator(size_t number_of_points, size_t number_of_dimensions);
+double LhcMinDistance(const Eigen::MatrixXd &X);

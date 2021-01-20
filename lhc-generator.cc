@@ -4,9 +4,11 @@
 // man hier vector extra includen?
 #include "lhc-generator.h"
 
-#include "fmt/core.h" //https://github.com/fmtlib/fmt (in and out streaming)
+//#include "fmt/core.h" //https://github.com/fmtlib/fmt (in and out streaming)
 #include "absl/random/random.h" //https://abseil.io/docs/cpp/guides/random
 
+#include <cmath>
+#include <limits>
 // typedef std::vector<double> vector_t; reicht im header
 // using vector_t = std::vector<double>;
 
@@ -22,45 +24,20 @@ static Eigen::VectorXd RandomNVector(int n) {
 }
 
 static void Shuffle(Eigen::VectorXd *x) {
-  double *xx = x->data(); // ist eigenschaft der std::vector klasser
+  double *xx = x->data(); // äquvivalent zu (*x).data()
   for (size_t i = x->size() - 1; i > 0; --i) {
     size_t j = absl::Uniform<size_t>(bitgen, 0, i);
     std::swap(xx[i], xx[j]);
   }
 }
-int LhcDataPrinter( char *argv[], int argc) {
-  /* code */
 
 
-  size_t number_of_points, number_of_dimensions; // definiert zwei variablen des typs "size_t"
-                            // https://en.cppreference.com/w/c/types/size_t
 
 
-  if (argc != 3) { // wenn nicht genau 3 argumente gegeben werden dann:
-    fmt::print(
-        "Usage: {} <n> <d>\n n - Number of points\n d - Number of dimensions\n",
-        argv[0]);
-    return 1;
-  }
 
-  // Converts the given string (optionally followed or preceded by ASCII
-  // whitespace) into an integer value, returning `true` if successful. The
-  // string must reflect a base-10 integer whose value falls within the range of
-  // the integer type (optionally preceded by a `+` or `-`). If any errors are
-  // encountered, this function returns `false`, leaving `out` in an unspecified
-  // state.
-  // template <typename int_type>
-  // ABSL_MUST_USE_RESULT bool SimpleAtoi(absl::string_view str, int_type* out);
-  if (!absl::SimpleAtoi(argv[1],
-                        &number_of_points)) { // Zweites Argument der Funktion
-                                              // ist der Speicherort
-    fmt::print("Du Du Du! Keine gültige Zahl als erstes Argument.\n");
-    return 1;
-  }
-  if (!absl::SimpleAtoi(argv[2], &number_of_dimensions)) {
-    fmt::print("Pöser Pube!\n");
-    return 1;
-  }
+
+
+Eigen::MatrixXd LhcDataGenerator(size_t number_of_points, size_t number_of_dimensions) {
 
   //std::vector<vector_t> X; // ein vektor aus vektoren -> matrix
   Eigen::MatrixXd X(number_of_points,number_of_dimensions);
@@ -72,11 +49,22 @@ int LhcDataPrinter( char *argv[], int argc) {
     X.col(d) = x; // https://www.cplusplus.com/reference/vector/vector/push_back/
   }
 
-  for (size_t n = 0; n < number_of_points; ++n) {
-    for (size_t d = 0; d < number_of_dimensions; ++d) {
-      fmt::print("{} ", X(n,d));
+  return X;
+}
+
+//Übergebe constante reference kein speicher wird kopiert
+//variable kann nicht verändert werden aber es ist ein in jedem fall gültiges objekt (Kein nullpointer)
+double LhcMinDistance(const Eigen::MatrixXd &X){
+    size_t rows = X.rows();
+    size_t cols = X.cols();
+    double best_min = std::numeric_limits<double>::max();
+    for(size_t n = 0; n < (rows-1); n++){
+      auto pt = X.row(n);
+      double min;
+      min = (X.block(n+1,0,rows-(n+1),cols).rowwise() - pt).rowwise().squaredNorm().minCoeff();
+      if(min < best_min) {
+        best_min = min;
+      }
     }
-    fmt::print("\n");
-  }
-  return 0;
+  return std::sqrt(best_min);
 }
